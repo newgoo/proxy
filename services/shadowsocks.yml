@@ -1,0 +1,21 @@
+version: '3'
+services:
+  shadowsocks:
+    image: oddrationale/docker-shadowsocks
+    restart: always
+    network_mode: host
+    volumes:
+      - ${PWD}/services/server.json:/etc/server.json
+    ports:
+      - "1984/tcp"
+    command: [ "/usr/local/bin/ssserver","-c", "/etc/server.json" ]
+
+  kcptun:
+    image: xtaci/kcptun:v20210103
+    depends_on:
+      - shadowsocks
+    restart: always
+    network_mode: host
+    ports:
+      - "1978/udp"
+    command: [ "/bin/server","-t","127.0.0.1:1984", "-l", ":1978", "-mode", "fast3", "-nocomp", "-sockbuf", "16777217","-dscp", "46" ]

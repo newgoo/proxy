@@ -8,7 +8,7 @@ services:
       - ${PWD}/services/server.json:/etc/server.json
     ports:
       - "1984/tcp"
-    command: [ "/usr/local/bin/ssserver","-c", "/etc/server.json" ]
+    command: [ "-c", "/etc/server.json" ]
 
   kcptun:
     image: xtaci/kcptun:v20210103
